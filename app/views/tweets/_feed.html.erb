@@ -1,0 +1,26 @@
+<% @tweets.each do |tweet| %>
+  <div class="row mb-2">
+    <div class="w-auto mr-2">
+      <%= link_to gravatar_for(tweet.user), tweet.user %>
+    </div>
+
+    <div class="w-75">
+      <div class="user-info">
+        <%= link_to tweet.user.username, tweet.user %> - <%= tweet.created_at.strftime('%d %b') %>
+      </div>
+
+      <div class="tweet-content">
+        <%= tweet.text %>
+      </div>
+
+      <div class="tweet-footer">
+        <% if current_user == tweet.user %>
+          <%= link_to "delete", tweet, method: :delete, 
+                                       data: { confirm: "You sure?" }, 
+                                       title: tweet.text,
+                                       class: 'btn btn-outline-danger btn-sm' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

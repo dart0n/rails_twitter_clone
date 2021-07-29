@@ -1,0 +1,49 @@
+<div class="row">
+  <aside class="col-md-4">
+    <!-- user info -->
+    <section>
+      <h3>
+        <%= gravatar_for @user %>
+        <%= @user.username %>
+      </h1>
+      <p>Registration: <%= @user.created_at.strftime('%B %Y') %></p>
+
+      <a href="<%= following_user_path(@user) %>">
+        <strong id="following" class="stat">
+          <%= @user.following.count %>
+        </strong>
+        following
+      </a>
+      <a href="<%= followers_user_path(@user) %>">
+        <strong id="followers" class="stat">
+          <%= @user.followers.count %>
+        </strong>
+        followers
+      </a>
+
+      <% unless current_user == @user %>
+        <div id="follow_form">
+        <% if current_user.following?(@user) %>
+          <%= render partial: 'unfollow', locals: {user: @user} %>
+        <% else %>
+          <%= render partial: 'follow', locals: {user: @user} %>
+        <% end %>
+        </div>
+      <% end %>
+    </section>
+
+    <% if current_user == @user %>
+      <section>
+        <%= render 'tweets/form' %>
+      </section>
+    <% end %>
+  </aside>
+
+  <div class="col-md-8">
+    <h3>Tweets</h3>
+    <div class="mb-4">
+      <%= render 'tweets/feed' %>
+    </div>
+    <%= will_paginate(@tweets, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+  </div>
+</div>
